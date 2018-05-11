@@ -7,8 +7,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 
 abstract class BaseScreen(protected val game: Game) : Screen, InputProcessor {
 
-    val viewWidth = 640f
-    val viewHeight = 480f
+    val viewWidth = 800f
+    val viewHeight = 600f
 
     protected val mainStage = Stage(FitViewport(viewWidth, viewHeight))
     protected val uiStage = Stage(FitViewport(viewWidth, viewHeight))

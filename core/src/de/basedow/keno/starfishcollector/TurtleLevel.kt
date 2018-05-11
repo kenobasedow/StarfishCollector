@@ -44,7 +44,7 @@ class TurtleLevel(game: Game) : BaseScreen(game) {
         starfish.texture = Texture("starfish.png")
         starfish.setEllipseBoundary()
 
-        val starfishCoords = arrayOf(400f, 100f, 00f, 400f, 650f, 400f)
+        val starfishCoords = arrayOf(400f, 100f, 100f, 400f, 650f, 400f)
         for (i in 0 until starfishCoords.size / 2) {
             val s = starfish.clone()
             s.setPosition(starfishCoords[i * 2], starfishCoords[i * 2 + 1])
