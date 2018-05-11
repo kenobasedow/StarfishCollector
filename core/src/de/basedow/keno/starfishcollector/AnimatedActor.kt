@@ -1,5 +1,6 @@
 package de.basedow.keno.starfishcollector
 
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -16,6 +17,10 @@ open class AnimatedActor : BaseActor() {
         animationStorage.put(name, anim)
         if (activeName == null)
             setActiveAnimation(name)
+    }
+
+    fun storeAnimation(name: String, tex: Texture) {
+        storeAnimation(name, Animation(1.0f, TextureRegion(tex)))
     }
 
     fun setActiveAnimation(name: String) {

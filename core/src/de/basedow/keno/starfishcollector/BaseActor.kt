@@ -61,7 +61,8 @@ open class BaseActor : Actor() {
 
     fun copy(original: BaseActor) {
         region = TextureRegion(original.region)
-        boundingPolygon = Polygon(original.boundingPolygon.vertices)
+        if (original.boundingPolygon.vertices.size > 0)
+            boundingPolygon = Polygon(original.boundingPolygon.vertices)
         boundingPolygon.setOrigin(original.originX, original.originY)
         setPosition(original.x, original.y)
         originX = original.originX

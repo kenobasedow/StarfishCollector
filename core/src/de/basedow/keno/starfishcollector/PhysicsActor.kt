@@ -52,7 +52,7 @@ class PhysicsActor : AnimatedActor() {
         if (speed > maxSpeed)
             speed = maxSpeed
 
-        moveBy(velocity.x, velocity.y)
+        moveBy(velocity.x * delta, velocity.y * delta)
 
         if (autoAngle && speed > 0.1f)
             rotation = motionAngle
