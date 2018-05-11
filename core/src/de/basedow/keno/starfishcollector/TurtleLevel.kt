@@ -3,6 +3,8 @@ package de.basedow.keno.starfishcollector
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.audio.Music
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -17,6 +19,11 @@ class TurtleLevel(game: Game) : BaseScreen(game) {
     private val turtle = PhysicsActor()
     private val mapWidth = 800
     private val mapHeight = 600
+
+    private var audioVolume = 0.80f
+    private var waterDrop: Sound
+    private var instrument: Music
+    private var oceanSurf: Music
 
     init {
         ocean.texture = Texture("water.jpg")
@@ -69,6 +76,17 @@ class TurtleLevel(game: Game) : BaseScreen(game) {
         turtle.maxSpeed = 100f
         turtle.deceleration = 200f
         mainStage.addActor(turtle)
+
+        waterDrop = Gdx.audio.newSound(Gdx.files.internal("Water_Drop.ogg"))
+        instrument = Gdx.audio.newMusic(Gdx.files.internal("Master_of_the_Feast.ogg"))
+        oceanSurf = Gdx.audio.newMusic(Gdx.files.internal("Ocean_Waves.ogg"))
+
+        instrument.isLooping = true
+        instrument.volume = audioVolume
+        instrument.play()
+        oceanSurf.isLooping = true
+        oceanSurf.volume = audioVolume
+        oceanSurf.play()
     }
 
     override fun update(delta: Float) {
@@ -99,7 +117,14 @@ class TurtleLevel(game: Game) : BaseScreen(game) {
             if (turtle.overlaps(starfish, false)) {
                 iterator.remove()
                 starfish.remove()
+                waterDrop.play(audioVolume)
             }
         }
+    }
+
+    override fun dispose() {
+        waterDrop.dispose()
+        instrument.dispose()
+        oceanSurf.dispose()
     }
 }
