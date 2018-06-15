@@ -1,17 +1,23 @@
 package de.basedow.keno.starfishcollector
 
-import com.badlogic.gdx.*
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.InputMultiplexer
+import com.badlogic.gdx.InputProcessor
+import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.viewport.FitViewport
 
-abstract class BaseScreen(protected val game: Game) : Screen, InputProcessor {
+abstract class BaseScreen(protected val game: BaseGame) : Screen, InputProcessor {
 
     val viewWidth = 800f
     val viewHeight = 600f
 
     protected val mainStage = Stage(FitViewport(viewWidth, viewHeight))
     protected val uiStage = Stage(FitViewport(viewWidth, viewHeight))
+
+    protected val uiTable = Table()
 
     var isPaused = false
 
@@ -21,6 +27,9 @@ abstract class BaseScreen(protected val game: Game) : Screen, InputProcessor {
 
     init {
         Gdx.input.inputProcessor = InputMultiplexer(this, uiStage, mainStage)
+
+        uiTable.setFillParent(true)
+        uiStage.addActor(uiTable)
     }
 
     abstract fun update(delta: Float)

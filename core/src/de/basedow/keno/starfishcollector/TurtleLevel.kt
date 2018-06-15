@@ -1,6 +1,5 @@
 package de.basedow.keno.starfishcollector
 
-import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.audio.Music
@@ -9,9 +8,10 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.Align
 
-class TurtleLevel(game: Game) : BaseScreen(game) {
+class TurtleLevel(game: BaseGame) : BaseScreen(game) {
 
     private val ocean = BaseActor()
     private val rockList = mutableListOf<BaseActor>()
@@ -24,6 +24,8 @@ class TurtleLevel(game: Game) : BaseScreen(game) {
     private var waterDrop: Sound
     private var instrument: Music
     private var oceanSurf: Music
+
+    private val starfishLeftLabel: Label
 
     init {
         ocean.texture = Texture("water.jpg")
@@ -87,6 +89,8 @@ class TurtleLevel(game: Game) : BaseScreen(game) {
         oceanSurf.isLooping = true
         oceanSurf.volume = audioVolume
         oceanSurf.play()
+
+        starfishLeftLabel = Label("Starfish Left: --", game.skin, "uiLabelStyle")
     }
 
     override fun update(delta: Float) {
@@ -120,6 +124,8 @@ class TurtleLevel(game: Game) : BaseScreen(game) {
                 waterDrop.play(audioVolume)
             }
         }
+
+        starfishLeftLabel.setText("Starfish Left: ${starfishList.size}")
     }
 
     override fun dispose() {
