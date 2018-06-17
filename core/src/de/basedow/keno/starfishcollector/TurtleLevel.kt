@@ -91,6 +91,8 @@ class TurtleLevel(game: BaseGame) : BaseScreen(game) {
         oceanSurf.play()
 
         starfishLeftLabel = Label("Starfish Left: --", game.skin, "uiLabelStyle")
+        starfishLeftLabel.setPosition(10f,540f)
+        uiStage.addActor(starfishLeftLabel)
     }
 
     override fun update(delta: Float) {
@@ -104,7 +106,7 @@ class TurtleLevel(game: BaseGame) : BaseScreen(game) {
         }
 
         when {
-            turtle.speed > 0 -> turtle.setActiveAnimation("swim")
+            turtle.speed > 1 -> turtle.setActiveAnimation("swim")
             else -> turtle.setActiveAnimation("rest")
         }
 
