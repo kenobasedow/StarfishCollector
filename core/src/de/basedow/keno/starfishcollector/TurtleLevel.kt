@@ -8,10 +8,11 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
-import com.badlogic.gdx.scenes.scene2d.ui.Button
-import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.badlogic.gdx.scenes.scene2d.ui.*
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Align
 
 class TurtleLevel(game: BaseGame) : BaseScreen(game) {
@@ -29,6 +30,8 @@ class TurtleLevel(game: BaseGame) : BaseScreen(game) {
     private var oceanSurf: Music
 
     private val starfishLeftLabel: Label
+
+    private val pauseOverlay = Table()
 
     init {
         ocean.texture = Texture("water.jpg")
@@ -106,6 +109,7 @@ class TurtleLevel(game: BaseGame) : BaseScreen(game) {
         pauseButton.addListener(object : InputListener() {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 togglePaused()
+                pauseOverlay.isVisible = isPaused
                 return true
             }
         })
@@ -116,6 +120,62 @@ class TurtleLevel(game: BaseGame) : BaseScreen(game) {
         uiTable.add(pauseButton)
         uiTable.row()
         uiTable.add().colspan(3).expandY()
+
+        val audioSlider = Slider(0f, 1f, 0.005f, false, game.skin, "uiSliderStyle")
+        audioSlider.value = audioVolume
+        audioSlider.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                audioVolume = audioSlider.value
+                instrument.volume = audioVolume
+                oceanSurf.volume = audioVolume
+            }
+        })
+
+        pauseOverlay.setFillParent(true)
+
+        val stacker = Stack()
+        stacker.setFillParent(true)
+        uiStage.addActor(stacker)
+        stacker.add(uiTable)
+        stacker.add(pauseOverlay)
+
+        game.skin.add("white", Texture("white4px.png"))
+        val pauseBackground = game.skin.newDrawable("white", 0f, 0f, 0f, 0.8f)
+
+        val pauseLabel = Label("Paused", game.skin, "uiLabelStyle")
+
+        val resumeButton = TextButton("Resume", game.skin, "uiTextButtonStyle")
+        resumeButton.addListener(object : InputListener() {
+            override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) = true
+            override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
+                togglePaused()
+                pauseOverlay.isVisible = isPaused
+            }
+        })
+
+        val quitButton = TextButton("Quit", game.skin, "uiTextButtonStyle")
+        quitButton.addListener(object : InputListener() {
+            override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) = true
+            override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
+                dispose()
+                Gdx.app.exit()
+            }
+        })
+
+        val volumeLabel = Label("Volume", game.skin, "uiLabelStyle")
+
+        pauseOverlay.background = pauseBackground
+        pauseOverlay.add(pauseLabel).pad(20f)
+        pauseOverlay.row()
+        pauseOverlay.add(resumeButton)
+        pauseOverlay.row()
+        pauseOverlay.add(quitButton).width(resumeButton.width)
+        pauseOverlay.row()
+        pauseOverlay.add(volumeLabel).padTop(100f)
+        pauseOverlay.row()
+        pauseOverlay.add(audioSlider).width(400f)
+
+        pauseOverlay.isVisible = false
     }
 
     override fun update(delta: Float) {
