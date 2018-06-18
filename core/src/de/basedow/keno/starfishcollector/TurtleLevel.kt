@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.ui.Button
 import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
 
 class TurtleLevel(game: BaseGame) : BaseScreen(game) {
@@ -40,6 +39,7 @@ class TurtleLevel(game: BaseGame) : BaseScreen(game) {
         overlay.setPosition(-50f, -50f)
         overlay.setColor(1f, 1f, 1f, 0.25f)
         uiStage.addActor(overlay)
+        overlay.toBack()
 
         val rock = BaseActor()
         rock.texture = Texture("rock.png")
@@ -110,15 +110,12 @@ class TurtleLevel(game: BaseGame) : BaseScreen(game) {
             }
         })
 
-        val uiTable = Table()
-        uiTable.setFillParent(true)
         uiTable.pad(10f)
         uiTable.add(starfishLeftLabel)
         uiTable.add().expandX()
         uiTable.add(pauseButton)
         uiTable.row()
         uiTable.add().colspan(3).expandY()
-        uiStage.addActor(uiTable)
     }
 
     override fun update(delta: Float) {
