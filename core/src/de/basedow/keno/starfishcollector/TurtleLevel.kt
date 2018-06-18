@@ -8,7 +8,11 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.InputListener
+import com.badlogic.gdx.scenes.scene2d.ui.Button
 import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
 
 class TurtleLevel(game: BaseGame) : BaseScreen(game) {
@@ -91,8 +95,30 @@ class TurtleLevel(game: BaseGame) : BaseScreen(game) {
         oceanSurf.play()
 
         starfishLeftLabel = Label("Starfish Left: --", game.skin, "uiLabelStyle")
-        starfishLeftLabel.setPosition(10f,540f)
-        uiStage.addActor(starfishLeftLabel)
+
+        val pauseTexture = Texture("pause.png")
+        game.skin.add("pauseImage", pauseTexture)
+
+        val pauseStype = Button.ButtonStyle()
+        pauseStype.up = game.skin.getDrawable("pauseImage")
+
+        val pauseButton = Button(pauseStype)
+        pauseButton.addListener(object : InputListener() {
+            override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                togglePaused()
+                return true
+            }
+        })
+
+        val uiTable = Table()
+        uiTable.setFillParent(true)
+        uiTable.pad(10f)
+        uiTable.add(starfishLeftLabel)
+        uiTable.add().expandX()
+        uiTable.add(pauseButton)
+        uiTable.row()
+        uiTable.add().colspan(3).expandY()
+        uiStage.addActor(uiTable)
     }
 
     override fun update(delta: Float) {

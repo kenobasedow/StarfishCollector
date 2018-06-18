@@ -6,7 +6,6 @@ import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.viewport.FitViewport
 
 abstract class BaseScreen(protected val game: BaseGame) : Screen, InputProcessor {
@@ -17,8 +16,6 @@ abstract class BaseScreen(protected val game: BaseGame) : Screen, InputProcessor
     protected val mainStage = Stage(FitViewport(viewWidth, viewHeight))
     protected val uiStage = Stage(FitViewport(viewWidth, viewHeight))
 
-    protected val uiTable = Table()
-
     var isPaused = false
 
     fun togglePaused() {
@@ -27,9 +24,6 @@ abstract class BaseScreen(protected val game: BaseGame) : Screen, InputProcessor
 
     init {
         Gdx.input.inputProcessor = InputMultiplexer(this, uiStage, mainStage)
-
-        uiTable.setFillParent(true)
-        uiStage.addActor(uiTable)
     }
 
     abstract fun update(delta: Float)
